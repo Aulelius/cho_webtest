@@ -1,4 +1,4 @@
-package com.chowebtest.admin;
+package com.chowebtest.admin.web;
 
 import com.chowebtest.admin.web.dto.HelloResponseDto;
 import org.springframework.web.bind.annotation.GetMapping;
