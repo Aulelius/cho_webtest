@@ -1,9 +1,12 @@
 package com.chowebtest.admin.web;
 
+import org.apache.catalina.security.SecurityConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -18,6 +21,7 @@ public class HelloControllerTest {
     @Autowired // 스프링이 관리하는 빈(Bean)을 주입 받습니다.
     private MockMvc mvc; // 웹 API를 테스트 할때 사용하며, 스프링 MVC 테스트의 시작점이다. 이 클래스를 통해 HTTP, GET, POST 등에 대한 API 테스트를 할 수 있다.
 
+    @WithMockUser(roles="USER")
     @Test
     public void hello가_리턴된다() throws Exception {
         String hello = "hello";
@@ -27,6 +31,7 @@ public class HelloControllerTest {
                 .andExpect(content().string(hello)); //  mvc.perform의 결과를 검증한다. 응답 본문의 내용을 검증한다. Controller에서 "hello"를 리턴하기 때문에 이 값이 맞는지 검증한다.
     }
 
+    @WithMockUser (roles="USER")
     @Test
     public void helloDto가_리턴된다() throws Exception {
     String name = "hello";
@@ -41,4 +46,5 @@ public class HelloControllerTest {
             .andExpect(jsonPath("$.name", is(name))) // JSON 응답값을 필드별로 검증할 수 있는 메소드이다. $를 기준으로 필드명을 명시한다.
             .andExpect(jsonPath("$.amount", is(amount)));
 }
+
 }

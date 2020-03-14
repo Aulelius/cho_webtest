@@ -1,5 +1,8 @@
 package com.chowebtest.admin.web;
 
+import com.chowebtest.admin.config.auth.LoginUser;
+import com.chowebtest.admin.config.auth.dto.SessionUser;
+import com.chowebtest.admin.domain.user.User;
 import com.chowebtest.admin.service.PostsService;
 import com.chowebtest.admin.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpSession;
+
 @RequiredArgsConstructor
 @Controller
 public class IndexController {
@@ -15,10 +20,14 @@ public class IndexController {
     private final PostsService postsService;
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, @LoginUser SessionUser user) {
         model.addAttribute("posts", postsService.findAllDesc());
+        if (user != null) {
+            model.addAttribute("userName", user.getName());
+        }
         return "index";
     }
+
     @GetMapping("/posts/save")
     public String postsSave() {
      return "posts-save";
